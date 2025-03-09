@@ -27,33 +27,33 @@ const Header: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="h-10 w-10 bg-black rounded-full flex items-center justify-center">
+          <div className="h-10 w-10 bg-light-blue-500 rounded-full flex items-center justify-center">
             <span className="text-white font-bold text-lg">G</span>
           </div>
-          <h1 className="text-xl font-bold tracking-tight">GenZBazar</h1>
+          <h1 className="text-xl font-bold tracking-tight text-light-blue-900">GenZBazar</h1>
         </div>
 
         <nav className="hidden md:flex items-center space-x-8">
           <a
             href="#products"
-            className="text-sm font-medium hover:text-black/70 transition-colors"
+            className="text-sm font-medium text-light-blue-800 hover:text-light-blue-600 transition-colors"
           >
             Products
           </a>
           <a
             href="#about"
-            className="text-sm font-medium hover:text-black/70 transition-colors"
+            className="text-sm font-medium text-light-blue-800 hover:text-light-blue-600 transition-colors"
           >
             About
           </a>
           <a
             href="#contact"
-            className="text-sm font-medium hover:text-black/70 transition-colors"
+            className="text-sm font-medium text-light-blue-800 hover:text-light-blue-600 transition-colors"
           >
             Contact
           </a>
           <button
-            className="flex items-center gap-1 bg-black text-white px-4 py-2 rounded-full text-sm font-medium transition-all hover:bg-black/90"
+            className="flex items-center gap-1 bg-light-blue-500 text-white px-4 py-2 rounded-full text-sm font-medium transition-all hover:bg-light-blue-600"
           >
             <ShoppingBag className="h-4 w-4" />
             <span>Cart (0)</span>
@@ -65,9 +65,9 @@ const Header: React.FC = () => {
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           {mobileMenuOpen ? (
-            <X className="h-6 w-6 text-black" />
+            <X className="h-6 w-6 text-light-blue-800" />
           ) : (
-            <Menu className="h-6 w-6 text-black" />
+            <Menu className="h-6 w-6 text-light-blue-800" />
           )}
         </button>
       </div>
@@ -82,26 +82,26 @@ const Header: React.FC = () => {
         <nav className="flex flex-col space-y-6">
           <a
             href="#products"
-            className="text-lg font-medium py-2"
+            className="text-lg font-medium py-2 text-light-blue-800"
             onClick={() => setMobileMenuOpen(false)}
           >
             Products
           </a>
           <a
             href="#about"
-            className="text-lg font-medium py-2"
+            className="text-lg font-medium py-2 text-light-blue-800"
             onClick={() => setMobileMenuOpen(false)}
           >
             About
           </a>
           <a
             href="#contact"
-            className="text-lg font-medium py-2"
+            className="text-lg font-medium py-2 text-light-blue-800"
             onClick={() => setMobileMenuOpen(false)}
           >
             Contact
           </a>
-          <button className="flex items-center justify-center gap-2 bg-black text-white py-3 rounded-lg text-base font-medium">
+          <button className="flex items-center justify-center gap-2 bg-light-blue-500 text-white py-3 rounded-lg text-base font-medium hover:bg-light-blue-600">
             <ShoppingBag className="h-5 w-5" />
             <span>Cart (0)</span>
           </button>
