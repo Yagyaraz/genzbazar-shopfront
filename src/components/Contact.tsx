@@ -39,7 +39,7 @@ const Contact: React.FC = () => {
                   </div>
                   <div>
                     <h4 className="font-medium mb-1">Visit Us</h4>
-                    <p className="text-gray-600">123 Innovation Street, Tech Hub, CA 94103</p>
+                    <p className="text-gray-600">New Baneshwor, Kathmandu Nepal</p>
                   </div>
                 </div>
                 
@@ -49,7 +49,7 @@ const Contact: React.FC = () => {
                   </div>
                   <div>
                     <h4 className="font-medium mb-1">Call Us</h4>
-                    <p className="text-gray-600">+1 (555) 123-4567</p>
+                    <p className="text-gray-600">+977-9803654396</p>
                   </div>
                 </div>
                 
@@ -59,7 +59,7 @@ const Contact: React.FC = () => {
                   </div>
                   <div>
                     <h4 className="font-medium mb-1">Email Us</h4>
-                    <p className="text-gray-600">hello@genzbazar.com</p>
+                    <p className="text-gray-600">genzbazar7@gmail.com</p>
                   </div>
                 </div>
               </div>
@@ -68,17 +68,21 @@ const Contact: React.FC = () => {
                 <h4 className="font-medium mb-4">Business Hours</h4>
                 <ul className="space-y-2 text-gray-600">
                   <li className="flex justify-between">
-                    <span>Monday - Friday:</span>
-                    <span>9:00 AM - 6:00 PM</span>
+                    <span>Sunday - Saturday:</span>
+                    {/* <span>24 hours in your service</span> */}
+                  </li>
+                 
+                  <li className="flex justify-between">
+                  <span>24 hours in your service</span>                    
                   </li>
                   <li className="flex justify-between">
-                    <span>Saturday:</span>
-                    <span>10:00 AM - 4:00 PM</span>
+                    <span>We can deliver our product with in a day all over Nepal</span>
+                    
                   </li>
-                  <li className="flex justify-between">
+                  {/* <li className="flex justify-between">
                     <span>Sunday:</span>
                     <span>Closed</span>
-                  </li>
+                  </li> */}
                 </ul>
               </div>
             </div>

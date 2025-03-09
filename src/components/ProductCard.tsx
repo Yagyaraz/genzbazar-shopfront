@@ -42,7 +42,7 @@ const ProductCard: React.FC<ProductProps> = ({
       </div>
       <div className="p-6">
         <h3 className="text-xl font-semibold mb-2">{name}</h3>
-        <p className="text-2xl font-bold mb-4">${price.toFixed(2)}</p>
+        <p className="text-2xl font-bold mb-4">NRP:{price.toFixed(2)}</p>
         
         <button
           onClick={() => setShowFeatures(!showFeatures)}

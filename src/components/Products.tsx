@@ -6,8 +6,8 @@ const productsData = [
   {
     id: 1,
     name: "Wireless Earbuds",
-    price: 89.99,
-    image: "https://images.unsplash.com/photo-1590658268037-7e63493b24a1?q=80&w=1000&auto=format&fit=crop",
+    price: 1099,
+    image: "/e1.png",
     features: [
       "Active noise cancellation",
       "30-hour battery life",
