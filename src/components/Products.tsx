@@ -19,7 +19,7 @@ const productsData = [
   {
     id: 2,
     name: "Smart Watch",
-    price: 129.99,
+    price: 799,
     image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000&auto=format&fit=crop",
     features: [
       "Heart rate monitoring",
@@ -32,7 +32,7 @@ const productsData = [
   {
     id: 3,
     name: "Portable Speaker",
-    price: 79.99,
+    price: 1299,
     image: "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?q=80&w=1000&auto=format&fit=crop",
     features: [
       "360° sound",
@@ -45,7 +45,7 @@ const productsData = [
   {
     id: 4,
     name: "Minimalist Backpack",
-    price: 59.99,
+    price: 1199,
     image: "https://images.unsplash.com/photo-1491637639811-60e2756cc1c7?q=80&w=1000&auto=format&fit=crop",
     features: [
       "Water-resistant material",
@@ -58,7 +58,7 @@ const productsData = [
   {
     id: 5,
     name: "Smart Water Bottle",
-    price: 45.99,
+    price: 99,
     image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?q=80&w=1000&auto=format&fit=crop",
     features: [
       "Temperature display",
@@ -71,7 +71,7 @@ const productsData = [
   {
     id: 6,
     name: "Wireless Charging Pad",
-    price: 39.99,
+    price: 399,
     image: "https://images.unsplash.com/photo-1586953208448-b95a79798f07?q=80&w=1000&auto=format&fit=crop",
     features: [
       "Fast charging capability",
