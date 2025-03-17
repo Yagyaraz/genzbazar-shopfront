@@ -1,11 +1,22 @@
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { MapPin, Phone, Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import emailjs from "emailjs-com";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+
+// Replace these with your own EmailJS service details
+const EMAILJS_SERVICE_ID = "service_id"; // Replace with your service ID
+const EMAILJS_TEMPLATE_ID = "template_id"; // Replace with your template ID
+const EMAILJS_USER_ID = "public_key"; // Replace with your public key
 
 const Contact: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSetupInstructions, setShowSetupInstructions] = useState(true);
+  const formRef = useRef<HTMLFormElement>(null);
   const { toast } = useToast();
   
   const handleSubmit = async (e: React.FormEvent) => {
@@ -18,17 +29,46 @@ const Contact: React.FC = () => {
     const email = formData.get('email') as string;
     const message = formData.get('message') as string;
     
-    // In a real implementation, you would use a form submission service 
-    // like FormSubmit, Formspree, or a server endpoint
-    try {
-      // Email service simulation (would be replaced with actual API call)
-      await new Promise(resolve => setTimeout(resolve, 1000));
+    // Check if EmailJS credentials are set
+    if (EMAILJS_SERVICE_ID === "service_id" || 
+        EMAILJS_TEMPLATE_ID === "template_id" || 
+        EMAILJS_USER_ID === "public_key") {
       
-      console.log(`Sending email to genzbazar7@gmail.com with:
+      console.log(`Email would be sent to genzbazar7@gmail.com with:
         Name: ${name}
         Email: ${email}
         Message: ${message}
       `);
+      
+      toast({
+        title: "Demo Mode",
+        description: "To send actual emails, please configure EmailJS credentials.",
+        variant: "default",
+      });
+      
+      setSubmitted(true);
+      setTimeout(() => {
+        setSubmitted(false);
+        form.reset();
+      }, 3000);
+      setIsSubmitting(false);
+      return;
+    }
+    
+    try {
+      const templateParams = {
+        from_name: name,
+        reply_to: email,
+        message: message,
+        to_email: "genzbazar7@gmail.com"
+      };
+      
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams,
+        EMAILJS_USER_ID
+      );
       
       setSubmitted(true);
       toast({
@@ -43,6 +83,7 @@ const Contact: React.FC = () => {
         form.reset();
       }, 3000);
     } catch (error) {
+      console.error("Error sending email:", error);
       toast({
         title: "Error sending message",
         description: "Please try again later.",
@@ -62,6 +103,30 @@ const Contact: React.FC = () => {
             Have questions about our products or services? We're here to help!
           </p>
         </div>
+        
+        {showSetupInstructions && (
+          <Alert className="mb-8 border-amber-200 bg-amber-50">
+            <AlertTitle>Email Service Setup Required</AlertTitle>
+            <AlertDescription>
+              <p className="mb-2">
+                To send actual emails, you need to set up EmailJS:
+              </p>
+              <ol className="list-decimal ml-5 space-y-1">
+                <li>Create a free account at <a href="https://www.emailjs.com/" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">EmailJS.com</a></li>
+                <li>Create an Email Service (like Gmail)</li>
+                <li>Create an Email Template with variables: from_name, reply_to, message, to_email</li>
+                <li>Replace the placeholder values in the code with your EmailJS credentials</li>
+              </ol>
+              <Button 
+                variant="outline" 
+                className="mt-3"
+                onClick={() => setShowSetupInstructions(false)}
+              >
+                Dismiss
+              </Button>
+            </AlertDescription>
+          </Alert>
+        )}
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div>
@@ -105,20 +170,14 @@ const Contact: React.FC = () => {
                 <ul className="space-y-2 text-gray-600">
                   <li className="flex justify-between">
                     <span>Sunday - Saturday:</span>
-                    {/* <span>24 hours in your service</span> */}
                   </li>
                  
                   <li className="flex justify-between">
-                  <span>24 hours in your service</span>                    
+                    <span>24 hours in your service</span>                    
                   </li>
                   <li className="flex justify-between">
                     <span>We can deliver our product with in a day all over Nepal</span>
-                    
                   </li>
-                  {/* <li className="flex justify-between">
-                    <span>Sunday:</span>
-                    <span>Closed</span>
-                  </li> */}
                 </ul>
               </div>
             </div>
@@ -134,7 +193,7 @@ const Contact: React.FC = () => {
                   <p className="text-sm mt-1">We'll get back to you shortly.</p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium mb-2">
                       Your Name
@@ -165,22 +224,22 @@ const Contact: React.FC = () => {
                     <label htmlFor="message" className="block text-sm font-medium mb-2">
                       Your Message
                     </label>
-                    <textarea
+                    <Textarea
                       id="message"
                       name="message"
                       rows={4}
                       className="w-full rounded-lg border border-gray-200 p-3 focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
                       required
-                    ></textarea>
+                    />
                   </div>
                   
-                  <button
+                  <Button
                     type="submit"
                     className="w-full bg-black text-white py-3 rounded-lg font-medium hover:bg-black/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? "Sending..." : "Send Message"}
-                  </button>
+                  </Button>
                 </form>
               )}
             </div>
