@@ -1,20 +1,56 @@
 
 import React, { useState } from "react";
 import { MapPin, Phone, Mail } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const Contact: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
+  
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
     
-    // Reset form after 3 seconds (in a real app, you'd submit to a server)
-    setTimeout(() => {
-      setSubmitted(false);
-      const form = e.target as HTMLFormElement;
-      form.reset();
-    }, 3000);
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+    const name = formData.get('name') as string;
+    const email = formData.get('email') as string;
+    const message = formData.get('message') as string;
+    
+    // In a real implementation, you would use a form submission service 
+    // like FormSubmit, Formspree, or a server endpoint
+    try {
+      // Email service simulation (would be replaced with actual API call)
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      console.log(`Sending email to yagyaraz28@gmail.com with:
+        Name: ${name}
+        Email: ${email}
+        Message: ${message}
+      `);
+      
+      setSubmitted(true);
+      toast({
+        title: "Message sent successfully",
+        description: "We'll get back to you as soon as possible.",
+        variant: "default",
+      });
+      
+      // Reset form after 3 seconds
+      setTimeout(() => {
+        setSubmitted(false);
+        form.reset();
+      }, 3000);
+    } catch (error) {
+      toast({
+        title: "Error sending message",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -106,6 +142,7 @@ const Contact: React.FC = () => {
                     <input
                       type="text"
                       id="name"
+                      name="name"
                       className="w-full rounded-lg border border-gray-200 p-3 focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
                       required
                     />
@@ -118,6 +155,7 @@ const Contact: React.FC = () => {
                     <input
                       type="email"
                       id="email"
+                      name="email"
                       className="w-full rounded-lg border border-gray-200 p-3 focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
                       required
                     />
@@ -129,6 +167,7 @@ const Contact: React.FC = () => {
                     </label>
                     <textarea
                       id="message"
+                      name="message"
                       rows={4}
                       className="w-full rounded-lg border border-gray-200 p-3 focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
                       required
@@ -137,9 +176,10 @@ const Contact: React.FC = () => {
                   
                   <button
                     type="submit"
-                    className="w-full bg-black text-white py-3 rounded-lg font-medium hover:bg-black/90 transition-colors"
+                    className="w-full bg-black text-white py-3 rounded-lg font-medium hover:bg-black/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={isSubmitting}
                   >
-                    Send Message
+                    {isSubmitting ? "Sending..." : "Send Message"}
                   </button>
                 </form>
               )}
