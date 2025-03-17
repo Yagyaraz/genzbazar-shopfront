@@ -24,7 +24,7 @@ const Contact: React.FC = () => {
       // Email service simulation (would be replaced with actual API call)
       await new Promise(resolve => setTimeout(resolve, 1000));
       
-      console.log(`Sending email to yagyaraz28@gmail.com with:
+      console.log(`Sending email to genzbazar7@gmail.com with:
         Name: ${name}
         Email: ${email}
         Message: ${message}
