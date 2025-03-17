@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from "react";
 import { MapPin, Phone, Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
@@ -7,10 +6,9 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
-// Replace these with your own EmailJS service details
-const EMAILJS_SERVICE_ID = "service_id"; // Replace with your service ID
-const EMAILJS_TEMPLATE_ID = "template_id"; // Replace with your template ID
-const EMAILJS_USER_ID = "public_key"; // Replace with your public key
+const EMAILJS_SERVICE_ID = "service_oebaozr";
+const EMAILJS_TEMPLATE_ID = "template_a9pod85";
+const EMAILJS_USER_ID = "public_key";
 
 const Contact: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
@@ -29,10 +27,7 @@ const Contact: React.FC = () => {
     const email = formData.get('email') as string;
     const message = formData.get('message') as string;
     
-    // Check if EmailJS credentials are set
-    if (EMAILJS_SERVICE_ID === "service_id" || 
-        EMAILJS_TEMPLATE_ID === "template_id" || 
-        EMAILJS_USER_ID === "public_key") {
+    if (EMAILJS_USER_ID === "public_key") {
       
       console.log(`Email would be sent to genzbazar7@gmail.com with:
         Name: ${name}
@@ -42,7 +37,7 @@ const Contact: React.FC = () => {
       
       toast({
         title: "Demo Mode",
-        description: "To send actual emails, please configure EmailJS credentials.",
+        description: "To send actual emails, please add your EmailJS public key.",
         variant: "default",
       });
       
@@ -77,7 +72,6 @@ const Contact: React.FC = () => {
         variant: "default",
       });
       
-      // Reset form after 3 seconds
       setTimeout(() => {
         setSubmitted(false);
         form.reset();
@@ -106,16 +100,16 @@ const Contact: React.FC = () => {
         
         {showSetupInstructions && (
           <Alert className="mb-8 border-amber-200 bg-amber-50">
-            <AlertTitle>Email Service Setup Required</AlertTitle>
+            <AlertTitle>Complete Email Service Setup</AlertTitle>
             <AlertDescription>
               <p className="mb-2">
-                To send actual emails, you need to set up EmailJS:
+                Your EmailJS service ID and template ID are configured. To complete setup:
               </p>
               <ol className="list-decimal ml-5 space-y-1">
-                <li>Create a free account at <a href="https://www.emailjs.com/" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">EmailJS.com</a></li>
-                <li>Create an Email Service (like Gmail)</li>
-                <li>Create an Email Template with variables: from_name, reply_to, message, to_email</li>
-                <li>Replace the placeholder values in the code with your EmailJS credentials</li>
+                <li>Log in to your <a href="https://www.emailjs.com/" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">EmailJS account</a></li>
+                <li>Go to Account Settings or Integration section</li>
+                <li>Find your Public Key (appears as "User ID" in some places)</li>
+                <li>Replace "public_key" in the code with your actual Public Key</li>
               </ol>
               <Button 
                 variant="outline" 
