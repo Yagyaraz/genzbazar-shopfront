@@ -1,8 +1,8 @@
+
 import React, { useState, useRef } from "react";
 import { MapPin, Phone, Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import emailjs from "emailjs-com";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -13,7 +13,6 @@ const EMAILJS_USER_ID = "public_key";
 const Contact: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showSetupInstructions, setShowSetupInstructions] = useState(true);
   const formRef = useRef<HTMLFormElement>(null);
   const { toast } = useToast();
   
@@ -97,30 +96,6 @@ const Contact: React.FC = () => {
             Have questions about our products or services? We're here to help!
           </p>
         </div>
-        
-        {showSetupInstructions && (
-          <Alert className="mb-8 border-amber-200 bg-amber-50">
-            <AlertTitle>Complete Email Service Setup</AlertTitle>
-            <AlertDescription>
-              <p className="mb-2">
-                Your EmailJS service ID and template ID are configured. To complete setup:
-              </p>
-              <ol className="list-decimal ml-5 space-y-1">
-                <li>Log in to your <a href="https://www.emailjs.com/" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">EmailJS account</a></li>
-                <li>Go to Account Settings or Integration section</li>
-                <li>Find your Public Key (appears as "User ID" in some places)</li>
-                <li>Replace "public_key" in the code with your actual Public Key</li>
-              </ol>
-              <Button 
-                variant="outline" 
-                className="mt-3"
-                onClick={() => setShowSetupInstructions(false)}
-              >
-                Dismiss
-              </Button>
-            </AlertDescription>
-          </Alert>
-        )}
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div>
