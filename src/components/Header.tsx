@@ -27,19 +27,27 @@ const Header: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <div className="h-16 w-16 bg-light-blue-500 rounded-full flex items-center justify-center">
+        
+
+          <div className="">
+            <img src="/logo-bg-removed-cropped.png"  className="h-16 " />
+          </div>
+          
+          {/* <h1 className="text-4xl font-bold flex  tracking-tight">
+            <span className="text-orange-500">Gen</span>
+             <span className="text-blue-600 italic font-extrabold text-5xl">Z</span>
+            <div className="h-18 w-18">
+
             <img
-              src="/LogoZ.png"
+              src="/bglogo.png"
               alt="GenZBazar Logo"
-              className="h-15 w-16 object-contain"
+              className="h-18 w-12 object-fill overflow-hidden "
 
             />
-          </div>
-          <h1 className="text-4xl font-bold tracking-tight">
-            <span className="text-orange-500">Gen</span>
-            <span className="text-blue-600 italic font-extrabold text-5xl">Z</span>
+            </div>
             <span className="text-orange-500">Bazar</span>
-          </h1>        </div>
+          </h1>         */}
+          </div>
 
         <nav className="hidden md:flex items-center space-x-8">
           <a
