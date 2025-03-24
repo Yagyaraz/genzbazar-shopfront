@@ -1,20 +1,91 @@
-
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { MapPin, Phone, Mail } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
+import emailjs from "emailjs-com";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
+
+const EMAILJS_SERVICE_ID = "service_oebaozr";
+const EMAILJS_TEMPLATE_ID = "template_a9pod85";
+const EMAILJS_USER_ID = "public_key";
 
 const Contact: React.FC = () => {
   const [submitted, setSubmitted] = useState(false);
-
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showSetupInstructions, setShowSetupInstructions] = useState(true);
+  const formRef = useRef<HTMLFormElement>(null);
+  const { toast } = useToast();
+  
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setIsSubmitting(true);
     
-    // Reset form after 3 seconds (in a real app, you'd submit to a server)
-    setTimeout(() => {
-      setSubmitted(false);
-      const form = e.target as HTMLFormElement;
-      form.reset();
-    }, 3000);
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+    const name = formData.get('name') as string;
+    const email = formData.get('email') as string;
+    const message = formData.get('message') as string;
+    
+    if (EMAILJS_USER_ID === "public_key") {
+      
+      console.log(`Email would be sent to genzbazar7@gmail.com with:
+        Name: ${name}
+        Email: ${email}
+        Message: ${message}
+      `);
+      
+      toast({
+        title: "Demo Mode",
+        description: "To send actual emails, please add your EmailJS public key.",
+        variant: "default",
+      });
+      
+      setSubmitted(true);
+      setTimeout(() => {
+        setSubmitted(false);
+        form.reset();
+      }, 3000);
+      setIsSubmitting(false);
+      return;
+    }
+    
+    try {
+      const templateParams = {
+        from_name: name,
+        reply_to: email,
+        message: message,
+        to_email: "genzbazar7@gmail.com"
+      };
+      
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams,
+        EMAILJS_USER_ID
+      );
+      
+      setSubmitted(true);
+      toast({
+        title: "Message sent successfully",
+        description: "We'll get back to you as soon as possible.",
+        variant: "default",
+      });
+      
+      setTimeout(() => {
+        setSubmitted(false);
+        form.reset();
+      }, 3000);
+    } catch (error) {
+      console.error("Error sending email:", error);
+      toast({
+        title: "Error sending message",
+        description: "Please try again later.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -26,6 +97,30 @@ const Contact: React.FC = () => {
             Have questions about our products or services? We're here to help!
           </p>
         </div>
+        
+        {showSetupInstructions && (
+          <Alert className="mb-8 border-amber-200 bg-amber-50">
+            <AlertTitle>Complete Email Service Setup</AlertTitle>
+            <AlertDescription>
+              <p className="mb-2">
+                Your EmailJS service ID and template ID are configured. To complete setup:
+              </p>
+              <ol className="list-decimal ml-5 space-y-1">
+                <li>Log in to your <a href="https://www.emailjs.com/" target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">EmailJS account</a></li>
+                <li>Go to Account Settings or Integration section</li>
+                <li>Find your Public Key (appears as "User ID" in some places)</li>
+                <li>Replace "public_key" in the code with your actual Public Key</li>
+              </ol>
+              <Button 
+                variant="outline" 
+                className="mt-3"
+                onClick={() => setShowSetupInstructions(false)}
+              >
+                Dismiss
+              </Button>
+            </AlertDescription>
+          </Alert>
+        )}
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
           <div>
@@ -69,20 +164,14 @@ const Contact: React.FC = () => {
                 <ul className="space-y-2 text-gray-600">
                   <li className="flex justify-between">
                     <span>Sunday - Saturday:</span>
-                    {/* <span>24 hours in your service</span> */}
                   </li>
                  
                   <li className="flex justify-between">
-                  <span>24 hours in your service</span>                    
+                    <span>24 hours in your service</span>                    
                   </li>
                   <li className="flex justify-between">
                     <span>We can deliver our product with in a day all over Nepal</span>
-                    
                   </li>
-                  {/* <li className="flex justify-between">
-                    <span>Sunday:</span>
-                    <span>Closed</span>
-                  </li> */}
                 </ul>
               </div>
             </div>
@@ -98,7 +187,7 @@ const Contact: React.FC = () => {
                   <p className="text-sm mt-1">We'll get back to you shortly.</p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium mb-2">
                       Your Name
@@ -106,6 +195,7 @@ const Contact: React.FC = () => {
                     <input
                       type="text"
                       id="name"
+                      name="name"
                       className="w-full rounded-lg border border-gray-200 p-3 focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
                       required
                     />
@@ -118,6 +208,7 @@ const Contact: React.FC = () => {
                     <input
                       type="email"
                       id="email"
+                      name="email"
                       className="w-full rounded-lg border border-gray-200 p-3 focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
                       required
                     />
@@ -127,20 +218,22 @@ const Contact: React.FC = () => {
                     <label htmlFor="message" className="block text-sm font-medium mb-2">
                       Your Message
                     </label>
-                    <textarea
+                    <Textarea
                       id="message"
+                      name="message"
                       rows={4}
                       className="w-full rounded-lg border border-gray-200 p-3 focus:border-black focus:outline-none focus:ring-1 focus:ring-black"
                       required
-                    ></textarea>
+                    />
                   </div>
                   
-                  <button
+                  <Button
                     type="submit"
-                    className="w-full bg-black text-white py-3 rounded-lg font-medium hover:bg-black/90 transition-colors"
+                    className="w-full bg-black text-white py-3 rounded-lg font-medium hover:bg-black/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={isSubmitting}
                   >
-                    Send Message
-                  </button>
+                    {isSubmitting ? "Sending..." : "Send Message"}
+                  </Button>
                 </form>
               )}
             </div>
