@@ -1,13 +1,14 @@
 
 import React, { useEffect, useState } from "react";
-import { ShoppingBag, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
+import CartPopover from "./CartPopover";
 
 const Header: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { cartItems, getCartCount } = useCart();
+  const { getCartCount } = useCart();
   const cartCount = getCartCount();
 
   useEffect(() => {
@@ -54,17 +55,7 @@ const Header: React.FC = () => {
           >
             Contact
           </a>
-          <button
-            className="flex items-center gap-1 bg-light-blue-500 text-white px-4 py-2 rounded-full text-sm font-medium transition-all hover:bg-light-blue-600 relative"
-          >
-            <ShoppingBag className="h-4 w-4" />
-            <span>Cart ({cartCount})</span>
-            {cartCount > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                {cartCount}
-              </span>
-            )}
-          </button>
+          <CartPopover />
         </nav>
 
         <button
@@ -108,15 +99,7 @@ const Header: React.FC = () => {
           >
             Contact
           </a>
-          <button className="flex items-center justify-center gap-2 bg-light-blue-500 text-white py-3 rounded-lg text-base font-medium hover:bg-light-blue-600 relative">
-            <ShoppingBag className="h-5 w-5" />
-            <span>Cart ({cartCount})</span>
-            {cartCount > 0 && (
-              <span className="absolute top-0 right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                {cartCount}
-              </span>
-            )}
-          </button>
+          <CartPopover className="w-full justify-center" />
         </nav>
       </div>
     </header>
