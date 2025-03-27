@@ -1,15 +1,27 @@
 
 import React, { useEffect, useState } from "react";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useCart } from "@/context/CartContext";
 import CartPopover from "./CartPopover";
+import { 
+  Command,
+  CommandDialog,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+} from "@/components/ui/command";
+import { useSearchProducts } from "@/hooks/useSearchProducts";
 
 const Header: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const { getCartCount } = useCart();
   const cartCount = getCartCount();
+  const { searchProducts, searchResults, searchQuery, setSearchQuery } = useSearchProducts();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -19,6 +31,10 @@ const Header: React.FC = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  const handleSearchToggle = () => {
+    setSearchOpen(!searchOpen);
+  };
 
   return (
     <header
@@ -37,6 +53,13 @@ const Header: React.FC = () => {
         </div>
 
         <nav className="hidden md:flex items-center space-x-8">
+          <button 
+            onClick={handleSearchToggle}
+            className="text-sm font-medium text-light-blue-800 hover:text-light-blue-600 transition-colors flex items-center gap-1"
+          >
+            <Search className="h-4 w-4" />
+            <span>Search</span>
+          </button>
           <a
             href="#products"
             className="text-sm font-medium text-light-blue-800 hover:text-light-blue-600 transition-colors"
@@ -58,16 +81,23 @@ const Header: React.FC = () => {
           <CartPopover />
         </nav>
 
-        <button
-          className="md:hidden"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
-          {mobileMenuOpen ? (
-            <X className="h-6 w-6 text-light-blue-800" />
-          ) : (
-            <Menu className="h-6 w-6 text-light-blue-800" />
-          )}
-        </button>
+        <div className="md:hidden flex items-center space-x-4">
+          <button 
+            onClick={handleSearchToggle}
+            className="text-light-blue-800"
+          >
+            <Search className="h-5 w-5" />
+          </button>
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? (
+              <X className="h-6 w-6 text-light-blue-800" />
+            ) : (
+              <Menu className="h-6 w-6 text-light-blue-800" />
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Mobile Menu */}
@@ -102,6 +132,59 @@ const Header: React.FC = () => {
           <CartPopover className="w-full justify-center" />
         </nav>
       </div>
+
+      {/* Search Dialog */}
+      <CommandDialog open={searchOpen} onOpenChange={setSearchOpen}>
+        <CommandInput 
+          placeholder="Search products..." 
+          value={searchQuery}
+          onValueChange={(value) => {
+            setSearchQuery(value);
+            searchProducts(value);
+          }}
+        />
+        <CommandList>
+          <CommandEmpty>No results found.</CommandEmpty>
+          <CommandGroup heading="Products">
+            {searchResults.map((product) => (
+              <CommandItem
+                key={product.id}
+                onSelect={() => {
+                  setSearchOpen(false);
+                  const element = document.getElementById(`product-${product.id}`);
+                  if (element) {
+                    const productsSection = document.getElementById('products');
+                    if (productsSection) {
+                      window.scrollTo({
+                        top: productsSection.offsetTop - 80,
+                        behavior: 'smooth'
+                      });
+                      
+                      // Highlight the product
+                      element.classList.add('ring-4', 'ring-light-blue-400', 'ring-opacity-50');
+                      setTimeout(() => {
+                        element.classList.remove('ring-4', 'ring-light-blue-400', 'ring-opacity-50');
+                      }, 2000);
+                    }
+                  }
+                }}
+              >
+                <div className="flex items-center">
+                  <img 
+                    src={product.image} 
+                    alt={product.name} 
+                    className="w-8 h-8 object-cover rounded-md mr-2"
+                  />
+                  <span>{product.name}</span>
+                  <span className="ml-auto font-semibold">
+                    NRP:{product.price.toFixed(2)}
+                  </span>
+                </div>
+              </CommandItem>
+            ))}
+          </CommandGroup>
+        </CommandList>
+      </CommandDialog>
     </header>
   );
 };
