@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import { ChevronDown, ChevronUp, ShoppingCart, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useCart } from "@/context/CartContext";
+import { useToast } from "@/hooks/use-toast";
 
 interface ProductProps {
   id: number;
@@ -20,9 +22,22 @@ const ProductCard: React.FC<ProductProps> = ({
 }) => {
   const [showFeatures, setShowFeatures] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
+  const { addToCart } = useCart();
+  const { toast } = useToast();
 
   const handleAddToCart = () => {
+    // Add item to cart
+    addToCart({ id, name, price, image });
+    
+    // Show success state
     setAddedToCart(true);
+    
+    // Show toast notification
+    toast({
+      title: "Added to cart",
+      description: `${name} has been added to your cart.`,
+      duration: 2000,
+    });
     
     // Reset the added state after showing confirmation
     setTimeout(() => {

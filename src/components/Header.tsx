@@ -2,10 +2,13 @@
 import React, { useEffect, useState } from "react";
 import { ShoppingBag, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useCart } from "@/context/CartContext";
 
 const Header: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { cartItems, getCartCount } = useCart();
+  const cartCount = getCartCount();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,27 +30,10 @@ const Header: React.FC = () => {
     >
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center gap-2">
-        
-
           <div className="">
             <img src="/logo-bg-removed-cropped.png"  className="h-16 " />
           </div>
-          
-          {/* <h1 className="text-4xl font-bold flex  tracking-tight">
-            <span className="text-orange-500">Gen</span>
-             <span className="text-blue-600 italic font-extrabold text-5xl">Z</span>
-            <div className="h-18 w-18">
-
-            <img
-              src="/bglogo.png"
-              alt="GenZBazar Logo"
-              className="h-18 w-12 object-fill overflow-hidden "
-
-            />
-            </div>
-            <span className="text-orange-500">Bazar</span>
-          </h1>         */}
-          </div>
+        </div>
 
         <nav className="hidden md:flex items-center space-x-8">
           <a
@@ -69,10 +55,15 @@ const Header: React.FC = () => {
             Contact
           </a>
           <button
-            className="flex items-center gap-1 bg-light-blue-500 text-white px-4 py-2 rounded-full text-sm font-medium transition-all hover:bg-light-blue-600"
+            className="flex items-center gap-1 bg-light-blue-500 text-white px-4 py-2 rounded-full text-sm font-medium transition-all hover:bg-light-blue-600 relative"
           >
             <ShoppingBag className="h-4 w-4" />
-            <span>Cart (0)</span>
+            <span>Cart ({cartCount})</span>
+            {cartCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                {cartCount}
+              </span>
+            )}
           </button>
         </nav>
 
@@ -117,9 +108,14 @@ const Header: React.FC = () => {
           >
             Contact
           </a>
-          <button className="flex items-center justify-center gap-2 bg-light-blue-500 text-white py-3 rounded-lg text-base font-medium hover:bg-light-blue-600">
+          <button className="flex items-center justify-center gap-2 bg-light-blue-500 text-white py-3 rounded-lg text-base font-medium hover:bg-light-blue-600 relative">
             <ShoppingBag className="h-5 w-5" />
-            <span>Cart (0)</span>
+            <span>Cart ({cartCount})</span>
+            {cartCount > 0 && (
+              <span className="absolute top-0 right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                {cartCount}
+              </span>
+            )}
           </button>
         </nav>
       </div>
