@@ -8,7 +8,7 @@ export const productsData = [
     features: [
       "Active noise cancellation",
       "30-hour battery life",
-      "Water resistant",
+      "Water resistant earbuds",
       "Touch controls",
       "Voice assistant compatible"
     ]

@@ -34,6 +34,11 @@ const Header: React.FC = () => {
 
   const handleSearchToggle = () => {
     setSearchOpen(!searchOpen);
+    if (!searchOpen) {
+      // Reset search when opening
+      setSearchQuery('');
+      searchProducts('');
+    }
   };
 
   return (
@@ -134,55 +139,66 @@ const Header: React.FC = () => {
       </div>
 
       {/* Search Dialog */}
-      <CommandDialog open={searchOpen} onOpenChange={setSearchOpen}>
+      <CommandDialog 
+        open={searchOpen} 
+        onOpenChange={setSearchOpen}
+        className="top-[15%] translate-y-0"
+      >
         <CommandInput 
-          placeholder="Search products..." 
+          placeholder="Search products (e.g. earbuds, wireless, watch)..." 
           value={searchQuery}
           onValueChange={(value) => {
             setSearchQuery(value);
             searchProducts(value);
           }}
+          className="border-none focus:ring-0 text-base py-6"
         />
-        <CommandList>
-          <CommandEmpty>No results found.</CommandEmpty>
-          <CommandGroup heading="Products">
-            {searchResults.map((product) => (
-              <CommandItem
-                key={product.id}
-                onSelect={() => {
-                  setSearchOpen(false);
-                  const element = document.getElementById(`product-${product.id}`);
-                  if (element) {
-                    const productsSection = document.getElementById('products');
-                    if (productsSection) {
-                      window.scrollTo({
-                        top: productsSection.offsetTop - 80,
-                        behavior: 'smooth'
-                      });
-                      
-                      // Highlight the product
-                      element.classList.add('ring-4', 'ring-light-blue-400', 'ring-opacity-50');
-                      setTimeout(() => {
-                        element.classList.remove('ring-4', 'ring-light-blue-400', 'ring-opacity-50');
-                      }, 2000);
+        <CommandList className="max-h-[60vh]">
+          <CommandEmpty>No results found. Try a different search term.</CommandEmpty>
+          {searchResults.length > 0 && (
+            <CommandGroup heading="Products">
+              {searchResults.map((product) => (
+                <CommandItem
+                  key={product.id}
+                  className="py-3 px-4 cursor-pointer"
+                  onSelect={() => {
+                    setSearchOpen(false);
+                    const element = document.getElementById(`product-${product.id}`);
+                    if (element) {
+                      const productsSection = document.getElementById('products');
+                      if (productsSection) {
+                        window.scrollTo({
+                          top: productsSection.offsetTop - 80,
+                          behavior: 'smooth'
+                        });
+                        
+                        // Highlight the product
+                        element.classList.add('ring-4', 'ring-light-blue-400', 'ring-opacity-50');
+                        setTimeout(() => {
+                          element.classList.remove('ring-4', 'ring-light-blue-400', 'ring-opacity-50');
+                        }, 2000);
+                      }
                     }
-                  }
-                }}
-              >
-                <div className="flex items-center">
-                  <img 
-                    src={product.image} 
-                    alt={product.name} 
-                    className="w-8 h-8 object-cover rounded-md mr-2"
-                  />
-                  <span>{product.name}</span>
-                  <span className="ml-auto font-semibold">
-                    NRP:{product.price.toFixed(2)}
-                  </span>
-                </div>
-              </CommandItem>
-            ))}
-          </CommandGroup>
+                  }}
+                >
+                  <div className="flex items-center w-full">
+                    <img 
+                      src={product.image} 
+                      alt={product.name} 
+                      className="w-12 h-12 object-cover rounded-md mr-3"
+                    />
+                    <div className="flex-1">
+                      <p className="font-medium">{product.name}</p>
+                      <p className="text-sm text-gray-500 truncate">{product.features.join(', ').substring(0, 60)}...</p>
+                    </div>
+                    <span className="ml-auto font-semibold whitespace-nowrap">
+                      NPR {product.price.toFixed(2)}
+                    </span>
+                  </div>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          )}
         </CommandList>
       </CommandDialog>
     </header>

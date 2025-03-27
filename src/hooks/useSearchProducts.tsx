@@ -21,12 +21,21 @@ export function useSearchProducts() {
     }
 
     const lowercasedQuery = query.toLowerCase();
-    const filteredProducts = productsData.filter(product => 
-      product.name.toLowerCase().includes(lowercasedQuery) ||
-      product.features.some(feature => 
-        feature.toLowerCase().includes(lowercasedQuery)
-      )
-    );
+    const keywords = lowercasedQuery.split(' ').filter(keyword => keyword.length > 0);
+    
+    const filteredProducts = productsData.filter(product => {
+      // Check if product name contains any of the keywords
+      const nameMatch = keywords.some(keyword => 
+        product.name.toLowerCase().includes(keyword)
+      );
+      
+      // Check if any product feature contains any of the keywords
+      const featureMatch = product.features.some(feature => 
+        keywords.some(keyword => feature.toLowerCase().includes(keyword))
+      );
+      
+      return nameMatch || featureMatch;
+    });
 
     setSearchResults(filteredProducts);
   }, []);
