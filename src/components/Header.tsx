@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { Menu, X, Search } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -35,7 +34,6 @@ const Header: React.FC = () => {
   const handleSearchToggle = () => {
     setSearchOpen(!searchOpen);
     if (!searchOpen) {
-      // Reset search when opening
       setSearchQuery('');
       searchProducts('');
     }
@@ -105,7 +103,6 @@ const Header: React.FC = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       <div
         className={cn(
           "md:hidden fixed inset-0 bg-white z-40 pt-20 px-6 transition-all duration-300 ease-in-out",
@@ -138,7 +135,6 @@ const Header: React.FC = () => {
         </nav>
       </div>
 
-      {/* Search Dialog - Removed the className prop from CommandDialog */}
       <CommandDialog 
         open={searchOpen} 
         onOpenChange={setSearchOpen}
@@ -159,7 +155,7 @@ const Header: React.FC = () => {
               {searchResults.map((product) => (
                 <CommandItem
                   key={product.id}
-                  className="py-3 px-4 cursor-pointer"
+                  className="py-2 px-3 cursor-pointer"
                   onSelect={() => {
                     setSearchOpen(false);
                     const element = document.getElementById(`product-${product.id}`);
@@ -171,7 +167,6 @@ const Header: React.FC = () => {
                           behavior: 'smooth'
                         });
                         
-                        // Highlight the product
                         element.classList.add('ring-4', 'ring-light-blue-400', 'ring-opacity-50');
                         setTimeout(() => {
                           element.classList.remove('ring-4', 'ring-light-blue-400', 'ring-opacity-50');
@@ -184,13 +179,13 @@ const Header: React.FC = () => {
                     <img 
                       src={product.image} 
                       alt={product.name} 
-                      className="w-12 h-12 object-cover rounded-md mr-3"
+                      className="w-10 h-10 object-cover rounded-md mr-3"
                     />
                     <div className="flex-1">
-                      <p className="font-medium">{product.name}</p>
-                      <p className="text-sm text-gray-500 truncate">{product.features.join(', ').substring(0, 60)}...</p>
+                      <p className="font-medium text-sm">{product.name}</p>
+                      <p className="text-xs text-gray-500 truncate">{product.features.join(', ').substring(0, 50)}...</p>
                     </div>
-                    <span className="ml-auto font-semibold whitespace-nowrap">
+                    <span className="ml-auto font-semibold text-sm whitespace-nowrap">
                       NPR {product.price.toFixed(2)}
                     </span>
                   </div>
