@@ -46,8 +46,8 @@ const ProductCard: React.FC<ProductProps> = ({
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group animate-scale-in transition-all duration-300 hover:shadow-md">
-      <div className="relative overflow-hidden aspect-square">
+    <div className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden group animate-scale-in transition-all duration-300 hover:shadow-md">
+      <div className="relative overflow-hidden aspect-square max-h-48">
         <img
           src={image}
           alt={name}
@@ -55,27 +55,27 @@ const ProductCard: React.FC<ProductProps> = ({
           loading="lazy"
         />
       </div>
-      <div className="p-6">
-        <h3 className="text-xl font-semibold mb-2">{name}</h3>
-        <p className="text-2xl font-bold mb-4">NRP:{price.toFixed(2)}</p>
+      <div className="p-4">
+        <h3 className="text-base font-semibold mb-1 line-clamp-1">{name}</h3>
+        <p className="text-lg font-bold mb-2">NRP:{price.toFixed(2)}</p>
         
         <button
           onClick={() => setShowFeatures(!showFeatures)}
-          className="w-full flex items-center justify-between text-sm font-medium text-gray-700 mb-4 py-2 border-b border-gray-100 transition-colors hover:text-black"
+          className="w-full flex items-center justify-between text-xs font-medium text-gray-700 mb-2 py-1 border-b border-gray-100 transition-colors hover:text-black"
         >
           <span>Features</span>
-          {showFeatures ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+          {showFeatures ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
         </button>
         
         <div
           className={cn(
-            "product-feature space-y-2 text-sm text-gray-600 mb-6",
+            "product-feature space-y-1 text-xs text-gray-600 mb-3",
             showFeatures && "active"
           )}
         >
-          <ul className="list-disc pl-5">
+          <ul className="list-disc pl-4">
             {features.map((feature, index) => (
-              <li key={index}>{feature}</li>
+              <li key={index} className="line-clamp-1">{feature}</li>
             ))}
           </ul>
         </div>
@@ -84,7 +84,7 @@ const ProductCard: React.FC<ProductProps> = ({
           onClick={handleAddToCart}
           disabled={addedToCart}
           className={cn(
-            "w-full py-3 rounded-lg font-medium text-sm flex items-center justify-center gap-2 transition-all",
+            "w-full py-2 rounded-md font-medium text-xs flex items-center justify-center gap-1 transition-all",
             addedToCart
               ? "bg-green-500 text-white"
               : "bg-black text-white hover:bg-black/90"
@@ -92,12 +92,12 @@ const ProductCard: React.FC<ProductProps> = ({
         >
           {addedToCart ? (
             <>
-              <Check size={16} />
+              <Check size={14} />
               Added to Cart
             </>
           ) : (
             <>
-              <ShoppingCart size={16} />
+              <ShoppingCart size={14} />
               Add to Cart
             </>
           )}
