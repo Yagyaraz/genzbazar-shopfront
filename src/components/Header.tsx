@@ -138,11 +138,10 @@ const Header: React.FC = () => {
         </nav>
       </div>
 
-      {/* Search Dialog */}
+      {/* Search Dialog - Removed the className prop from CommandDialog */}
       <CommandDialog 
         open={searchOpen} 
         onOpenChange={setSearchOpen}
-        className="top-[15%] translate-y-0"
       >
         <CommandInput 
           placeholder="Search products (e.g. earbuds, wireless, watch)..." 
